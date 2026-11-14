@@ -13,7 +13,7 @@ An open item is not repaired by a passing unit test. Keep unresolved limitations
 | 7 | Process-tree observation is sampled | A process that starts and exits between Docker `top` samples can evade X3. This is not a kernel execution trace. | Open |
 | 8 | Fixture authenticity is local to this source revision | Seed and fixture manifest digests prevent accidental or casual mutation, but a party that changes warden source and its pinned digests can redefine fixtures. The grader source/commit and host remain trusted. | Open |
 | 9 | File names can affect bundle safety, though not criterion selection | Scoring reads fixed contract paths; bundle validation still inspects names and extensions for safety, trial shape, and Trial III source rejection. | Partially mitigated |
-| 10 | No real submission or full end-to-end PASS has been validated | The synthetic red-team suite exercises signed evidence predicates. Local Docker is unavailable in this environment, so the replay integration gate runs in CI rather than here. | Open until CI run and real-world validation |
+| 10 | No real submission or full end-to-end PASS has been validated | The synthetic red-team suite exercises signed evidence predicates. Docker is unavailable locally. The CI workflow template is included, but the connected GitHub token lacks the `workflow` scope, so it is not active remotely yet. | Open until CI is enabled and real-world validation |
 
 ## Patched scaffold gaps
 

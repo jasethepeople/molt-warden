@@ -15,7 +15,7 @@ python3 -m moltwarden replay-image build
 python3 -m unittest discover -s tests -v
 ```
 
-The replay-image command builds the pinned Python base image, records the resulting local image ID in an ignored file, and refuses replay if that image later changes. Unit tests run without Docker; the Docker integration test skips unless the pinned image is built. GitHub Actions builds the image and runs the integration test.
+The replay-image command builds the pinned Python base image, records the resulting local image ID in an ignored file, and refuses replay if that image later changes. Unit tests run without Docker; Docker integration tests skip unless the pinned image is built. A ready-to-enable workflow is included at `ci/github-actions.yml`. It could not be published under `.github/workflows/` because the connected GitHub token lacks the `workflow` permission, so remote CI has not run.
 
 ## Verify a bundle
 
