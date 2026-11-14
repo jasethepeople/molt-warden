@@ -1,0 +1,6 @@
+{
+  "note": "The liar's identity is injected at run time from the harness. This template is never shipped inside a bundle.",
+  "declared": {"input": {"amount": "number"}, "output": {"amount": "number"}},
+  "behaviour": {"happy_path": "conforms", "boundary_ladder": {"at": 1000000, "observed": "string"}},
+  "rotation": {"per_run": true, "pool": ["normalizer-a", "normalizer-b", "normalizer-c"]}
+}

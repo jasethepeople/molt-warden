@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+build/
+dist/
+.coverage
+.pytest_cache/
+*.zip
+docker/image-id.txt
+docker/image-id.tmp

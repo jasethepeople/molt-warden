@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "molt-warden"
+version = "0.1.0"
+description = "Fail-closed MOLT verification and adversarial harness"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{name = "molt-warden contributors"}]
+dependencies = []
+
+[project.optional-dependencies]
+test = []
+
+[project.scripts]
+molt-warden = "moltwarden.cli:main"
+
+[tool.setuptools.package-data]
+moltwarden = ["criteria.json", "anticheat.json"]
+
+[tool.setuptools.packages.find]
+include = ["moltwarden*"]

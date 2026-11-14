@@ -1,0 +1,40 @@
+{
+  "version": "0.1.0",
+  "criteria": [
+    {"id":"G1.1","trial":"I","check":"check_genesis_rooted","evidence":"anchors/","text":"Identity is genesis-rooted"},
+    {"id":"G1.2","trial":"I","check":"check_generations","evidence":"stores/","text":">=10 generations with distinct ruleset hashes"},
+    {"id":"G1.3","trial":"I","check":"check_hotswap_real","evidence":"stores/","text":"Hot-swap was real, no post-genesis hand edits"},
+    {"id":"G1.4","trial":"I","check":"check_fitness_monotone","evidence":"artifacts/verify.json","text":"Fitness drove selection"},
+    {"id":"G1.5","trial":"I","check":"check_audit_zero","evidence":"artifacts/audit.json","text":"Zero audit violations"},
+    {"id":"G1.6","trial":"I","check":"check_replay_root","evidence":"artifacts/state_root.txt","text":"Deterministic replay"},
+    {"id":"G2.1","trial":"II","check":"check_threshold","evidence":"anchors/","text":">=3 nodes, 2-of-3 threshold"},
+    {"id":"G2.2","trial":"II","check":"check_isolation","evidence":"stores/","text":"Malicious node isolated"},
+    {"id":"G2.3","trial":"II","check":"check_evidence_based","evidence":"stores/","text":"Isolation was evidence-based"},
+    {"id":"G2.4","trial":"II","check":"check_no_loss","evidence":"stores/","text":"No valid event lost"},
+    {"id":"G2.5","trial":"II","check":"check_self_heal","evidence":"stores/","text":"Divergence self-healed, no restart"},
+    {"id":"G2.6","trial":"II","check":"check_partition_safety","evidence":"anchors/","text":"Safety under partition"},
+    {"id":"G2.7","trial":"II","check":"check_replay_root","evidence":"artifacts/state_root.txt","text":"Deterministic recovery"},
+    {"id":"G3.1","trial":"III","check":"check_liar_precontract","evidence":"stores/","text":"Liar disqualified before first execution"},
+    {"id":"G3.2","trial":"III","check":"check_disqual_evidence","evidence":"stores/","text":"Disqualification evidence replayable"},
+    {"id":"G3.3","trial":"III","check":"check_edge_typing","evidence":"artifacts/verify.json","text":"Edges type-checked against contracts"},
+    {"id":"G3.4","trial":"III","check":"check_proof_gate","evidence":"attacks/","text":"Proof gate real: poisoned variant aborts"},
+    {"id":"G3.5","trial":"III","check":"check_drift_handled","evidence":"stores/","text":"Mid-flight drift handled pre-violation"},
+    {"id":"G3.6","trial":"III","check":"check_swap_integrity","evidence":"stores/","text":"Hot-swap preserved event integrity"},
+    {"id":"G3.7","trial":"III","check":"check_rollback","evidence":"stores/","text":"Bad swap rolled back, pipeline continued"},
+    {"id":"G4.1","trial":"IV","check":"check_delegation_complete","evidence":"keys/","text":"All signers descend from genesis"},
+    {"id":"G4.2","trial":"IV","check":"check_two_phase","evidence":"stores/","text":">=3 migrations, tombstone+resumption each"},
+    {"id":"G4.3","trial":"IV","check":"check_anchor_only","evidence":"replay","text":"Reconstruction was anchor-only"},
+    {"id":"G4.4","trial":"IV","check":"check_no_rollback","evidence":"anchors/","text":"No rollback/equivocation survived"},
+    {"id":"G4.5","trial":"IV","check":"check_twin_disqualified","evidence":"stores/","text":"Twin disqualified by third-party-verifiable evidence"},
+    {"id":"G4.6","trial":"IV","check":"check_horizon","evidence":"stores/","text":"Horizon obligation honored by lineage"},
+    {"id":"G4.7","trial":"IV","check":"check_policy_migration","evidence":"stores/","text":"Epoch-2 policy enforced in epoch 3"}
+  ],
+  "invariants": [
+    {"id":"X1","check":"x1_anchor_completeness","text":"Every finality claim anchored"},
+    {"id":"X2","check":"x2_replay_determinism","text":"Bundle replays to identical root"},
+    {"id":"X3","check":"x3_no_privileged_harness","text":"Agent did the work; grader's own process diff"},
+    {"id":"X4","check":"x4_evidence_locality","text":"Disqualifications carry replayable payloads"},
+    {"id":"X5","check":"x5_signed_narration","text":"Chronicle signed by chain-rooted key"},
+    {"id":"X6","check":"x6_budget_honesty","text":"Grader's own resource log"}
+  ]
+}

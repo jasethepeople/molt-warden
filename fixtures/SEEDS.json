@@ -1,0 +1,6 @@
+{
+  "version": "v0",
+  "world-v0": {"seed": 7, "ticks": 120, "adversaries": 2},
+  "vendors-v0": {"seed": 11, "vendors": 5, "liar_rotation": "harness-injected"},
+  "twin-v0": {"seed": 13, "forks": 3, "twin_at_migration": 2}
+}

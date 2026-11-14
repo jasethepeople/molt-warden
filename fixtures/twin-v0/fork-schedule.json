@@ -1,0 +1,1 @@
+{"fixture":"twin-v0","forks":3,"schedule":[{"branch":"primary","fork":1,"tick":0},{"branch":"twin","fork":2,"tick":40},{"branch":"primary","fork":3,"tick":80}],"schema":"molt-warden-fixture/v0","seed":13,"twin_at_migration":2}

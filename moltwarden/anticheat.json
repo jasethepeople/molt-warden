@@ -1,0 +1,10 @@
+{
+  "version": "0.1.0",
+  "cheats": [
+    {"id":"C1","name":"hardcoded evolved ruleset","trial":"I","caught_by":"G1.4","tested":false},
+    {"id":"C2","name":"identified liar by reading source","trial":"III","caught_by":"G3.2","tested":false},
+    {"id":"C3","name":"harness detected the Byzantine node","trial":"II","caught_by":"G2.3","tested":false},
+    {"id":"C4","name":"carried state across migration via side channel","trial":"IV","caught_by":"G4.3","tested":false},
+    {"id":"C5","name":"deleted the twin's store","trial":"IV","caught_by":"G4.5","tested":false}
+  ]
+}
