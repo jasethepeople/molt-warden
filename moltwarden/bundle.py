@@ -209,6 +209,60 @@ def _check_trial_specific(root: Path, trial: str) -> None:
             raise BundleError("trial IV requires keys/delegation.json with the full genesis-to-current chain")
 
 
+def _check_point_in_time(root: Path, manifest: dict) -> None:
+    pit = manifest.get("point_in_time")
+    if pit is None:
+        return
+    if not isinstance(pit, dict):
+        raise BundleError("point_in_time must be an object")
+    required = ("anchor_tick", "anchor_event_id", "session_id", "triggering_alert_id")
+    for key in required:
+        if key not in pit:
+            raise BundleError(f"point_in_time missing key: {key}")
+    anchor_tick = pit["anchor_tick"]
+    if type(anchor_tick) is not int or anchor_tick < 0:
+        raise BundleError("point_in_time.anchor_tick must be a non-negative integer")
+    for key in ("anchor_event_id", "session_id", "triggering_alert_id"):
+        value = pit[key]
+        if not isinstance(value, str) or not value or len(value) > 200:
+            raise BundleError(f"point_in_time.{key} must be a non-empty string of at most 200 characters")
+
+    found_anchor = False
+    stores = root / "stores"
+    for event_file in stores.rglob("*.jsonl"):
+        try:
+            lines = event_file.read_text(encoding="utf-8").splitlines()
+        except (OSError, UnicodeError) as exc:
+            raise BundleError(f"point_in_time cannot read {event_file.relative_to(root)}: {exc}") from exc
+        for line_no, line in enumerate(lines, 1):
+            if not line.strip():
+                continue
+            try:
+                event = json.loads(
+                    line,
+                    object_pairs_hook=_pairs_no_duplicates,
+                    parse_constant=lambda value: (_ for _ in ()).throw(ValueError(f"invalid JSON constant: {value}")),
+                )
+            except (json.JSONDecodeError, ValueError) as exc:
+                raise BundleError(f"point_in_time invalid JSON in {event_file.relative_to(root)}:{line_no}: {exc}") from exc
+            if not isinstance(event, dict):
+                raise BundleError(f"point_in_time event must be an object in {event_file.relative_to(root)}:{line_no}")
+            event_id = event.get("id", event.get("event_id"))
+            if event_id == pit["anchor_event_id"]:
+                found_anchor = True
+            if "tick" in event:
+                tick = event["tick"]
+                if type(tick) is not int or tick < 0:
+                    raise BundleError(f"point_in_time event tick must be a non-negative integer in {event_file.relative_to(root)}:{line_no}")
+                if tick > anchor_tick:
+                    raise BundleError(
+                        f"event past point_in_time anchor in {event_file.relative_to(root)}: "
+                        f"tick {tick} > {anchor_tick}"
+                    )
+    if not found_anchor:
+        raise BundleError("point_in_time.anchor_event_id does not exist in stores/ JSONL events")
+
+
 def load_bundle(root: str | os.PathLike) -> Bundle:
     candidate = Path(root).expanduser()
     try:
@@ -258,6 +312,7 @@ def load_bundle(root: str | os.PathLike) -> Bundle:
     bundle = Bundle(root=root_path, manifest=manifest)
     if bundle.state_root() != claimed:
         raise BundleError("manifest claimed_state_root does not equal artifacts/state_root.txt")
+    _check_point_in_time(root_path, manifest)
     _check_keys(root_path)
     _check_trial_specific(root_path, trial)
     return bundle

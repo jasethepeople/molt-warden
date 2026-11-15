@@ -2,7 +2,7 @@
 
 A fail-closed MOLT verification harness: it validates signed evidence, replays submissions in a sealed Docker container, runs the frozen criterion registry, and exercises synthetic anti-cheat cases.
 
-**Status: v0.1.0 implementation; not GAUNTLET-certified.** All 27 criterion IDs and six invariants are wired to executable checks. The checks implement the exact evidence profile in `EVIDENCE.md`; they do not invent meaning for unspecified GAUNTLET proof formats, and a signed claim is not treated as proof of factual truth. Trial III has a known static-bundle/runtime-liar mismatch; see `KNOWN-GAPS.md` before relying on G3.1.
+**Status: v0.2.0 implementation; not GAUNTLET-certified.** The additive point-in-time bundle field is validated; all 27 criterion IDs and six invariants remain wired to executable checks. The checks implement the exact evidence profile in `EVIDENCE.md`; they do not invent meaning for unspecified GAUNTLET proof formats, and a signed claim is not treated as proof of factual truth. Trial III has a known static-bundle/runtime-liar mismatch; see `KNOWN-GAPS.md` before relying on G3.1.
 
 ## Build and test
 
@@ -26,6 +26,8 @@ python3 -m moltwarden redteam
 ```
 
 The grader records the current clean Git commit automatically; an uncommitted tree is marked `uncommitted`. `--grader-commit` overrides it. Exit codes: `0` PASS, `1` FAIL, `2` VOID, `3` ERROR. Invalid bundles or failed/missing isolated replay are VOID; the grader never executes submissions unsandboxed.
+
+Point-in-time submissions may add the optional `manifest.point_in_time` object documented in `BUNDLE.md`. Warden validates that the anchor event exists, rejects malformed or post-anchor stored events as VOID, and otherwise applies the unchanged trial profile and verdict schema.
 
 ## Replay and scoring
 

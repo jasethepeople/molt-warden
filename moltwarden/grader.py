@@ -14,7 +14,7 @@ from .invariants import run_invariant
 from .replay import ReplayOutcome, run_replay
 from .verdict import Replay, Result, Verdict
 
-WARDEN_VERSION = "0.1.0"
+WARDEN_VERSION = "0.2.0"
 EXPECTED_CRITERIA = {"I": 6, "II": 7, "III": 7, "IV": 7}
 
 

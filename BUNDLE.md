@@ -50,6 +50,21 @@ The root directories `anchors/`, `stores/`, `keys/`, and `artifacts/`, plus `man
 
 The fixture is fixed by trial: I/II use `world-v0`, III uses `vendors-v0`, IV uses `twin-v0`. `claimed_criteria` and toolchain labels are informational only. The manifest root must equal the exact `sha256:<64 lowercase hex>` in `artifacts/state_root.txt` and the value reproduced by both runs.
 
+## Point-in-time bundles (v0.2)
+
+Sentinel may submit a bundle representing an agent's state at a live moment. The additive `manifest.json` field is:
+
+```json
+"point_in_time": {
+  "anchor_tick": 87,
+  "anchor_event_id": "we-<opaque>",
+  "session_id": "sentinel-<opaque>",
+  "triggering_alert_id": "alert-<opaque>"
+}
+```
+
+The field is optional; v0.1 bundles remain valid. When present, all four values are required, `anchor_tick` is a non-negative integer (booleans are rejected), and `anchor_event_id` must occur as an `id` or `event_id` in a JSONL event file beneath `stores/`. Every top-level `tick` must be a non-negative integer no later than `anchor_tick`; malformed JSON, malformed ticks, or post-anchor events make the bundle VOID. Sentinel snapshots are responsible for selecting the target agent's DAG and truncating it before submission. `claimed_state_root`, `artifacts/state_root.txt`, and both replay outputs must bind to that same truncated snapshot. The existing trial criteria and `verdict.json` schema are unchanged. Warden treats alert/session identifiers as metadata, not evidence, and a PASS does not establish behavioral innocence outside the frozen criteria.
+
 ## MOLT ledger and evidence
 
 `stores/ledger/` follows MOLT-CORE Camp 1: canonical nine-field JSONL events, a manifest binding byte lengths and artifact hashes, and an Ed25519 public key. Every event signature, actor/key binding, sequence, previous hash, and recomputed hash is checked. Private keys in `keys/` void the bundle. `keys/delegation.json`, the fixed event types, and proof fields are specified in `EVIDENCE.md`.
